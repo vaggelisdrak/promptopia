@@ -54,6 +54,10 @@ const MyProfile = () => {
     }
   }
 
+  const viewFavorites = () => {
+    router.push('/favorites');
+  };
+
   if(loading){
     return <Loading/>;
   }
@@ -65,6 +69,7 @@ const MyProfile = () => {
         data={posts}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
+        viewFavorites={viewFavorites}
     />
   )
 }

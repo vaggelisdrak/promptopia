@@ -6,12 +6,13 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import Loading from "./Loading";
 
-const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
+const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick}) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
 
   const [copied, setCopied] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const handleProfileClick = () => {
     console.log(post);
@@ -25,6 +26,15 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt);
     setTimeout(() => setCopied(false), 3000);
+  };
+
+   const handleSave = () => {
+    if(!saved){
+      setSaved(true)
+    }
+    else{
+      setSaved(false)
+    }
   };
 
 
@@ -53,6 +63,27 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </div>
         </div>
 
+
+        {session?.user.id === post.creator._id && (
+          <div className='copy_btn' onClick={handleSave}>
+          <Image
+            src={
+              saved
+                ? "/assets/icons/heartchecked.svg"
+                : "/assets/icons/heart.svg"
+            }
+            alt={saved? "saved_icon" : "unseaved_icon"}
+            width={32}
+            height={32}
+          />
+        </div>
+        )}
+
+        
+      </div>
+
+      <p className='my-4 font-satoshi text-sm text-gray-700'>
+        {post.prompt}
         <div className='copy_btn' onClick={handleCopy}>
           <Image
             src={
@@ -64,10 +95,9 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
             width={12}
             height={12}
           />
-        </div>
-      </div>
-
-      <p className='my-4 font-satoshi text-sm text-gray-700'>{post.prompt}</p>
+          </div>
+      </p>
+      
       <p
         className='font-inter text-sm orange_gradient cursor-pointer'
         onClick={() => handleTagClick && handleTagClick(post.tag)}
