@@ -4,7 +4,7 @@ import User from "@models/user";
 
 export const GET = async (req, res) => {
     try {
-         await connectToDB();
+        await connectToDB();
         const prompts = await Prompt.find().populate({
           path: "creator"
         });
@@ -14,7 +14,7 @@ export const GET = async (req, res) => {
         });
 
         // Add a unique identifier to the URL to force a cache-busting reload
-        const url = new URL(request.url);
+        const url = new URL(req.url);
         url.searchParams.set("t", Date.now());
         response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
         response.headers.set("Pragma", "no-cache");
