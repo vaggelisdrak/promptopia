@@ -63,7 +63,6 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick}) => {
           </div>
         </div>
 
-
         {session?.user.id === post.creator._id && (
           <div className='copy_btn' onClick={handleSave}>
           <Image
